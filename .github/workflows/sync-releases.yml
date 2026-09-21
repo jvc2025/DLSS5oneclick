@@ -1,0 +1,21 @@
+name: Sync Releases from Upstream
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天检查一次
+  workflow_dispatch: # 允许手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync Releases
+        uses: aminya/sync-releases@v1
+        with:
+          source: faisalkindi/DLSS5oneclick
+          destination: jvc2025/DLSS5oneclick
+          token: ${{ secrets.PAT_TOKEN }}
+          destination-token: ${{ secrets.PAT_TOKEN }}
