@@ -1,21 +1,25 @@
 name: Sync Releases from Upstream
+
 on:
   schedule:
-    - cron: '0 0 * * *' # 每天检查一次
-  workflow_dispatch: # 允许手动触发
+    - cron: '0 0 * * *'   # 每天 UTC 0 点（北京时间 8 点）自动检查
+  workflow_dispatch:       # 允许手动触发
 
 permissions:
   contents: write
 
 jobs:
-  sync:
+  sync-releases:
     runs-on: ubuntu-latest
+    name: Sync Releases
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Sync Releases
-        uses: aminya/sync-releases@v1
+      - name: Clone Releases
+        uses: andrewthetechie/gha-clone-releases@v1
         with:
-          source: faisalkindi/DLSS5oneclick
-          destination: jvc2025/DLSS5oneclick
-          token: ${{ secrets.PAT_TOKEN }}
-          destination-token: ${{ secrets.PAT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          src_repo: faisalkindi/DLSS5oneclick
+          dest_repo: jvc2025/DLSS5oneclick
+          copy_assets: true
+          skip_draft: true
+          skip_prerelease: true
